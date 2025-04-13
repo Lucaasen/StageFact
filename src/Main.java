@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 //class User {
 //    private String username;
@@ -217,75 +215,180 @@ public class Berekenen {
 }
 
 public class Rekening {
-    public String materiaalNaam;
-    public int materiaalAantal;
-    public int materiaalPrijs;
+    private String materiaalNaam;
+    private int aantal;
+    private double prijs; // <-- was int, nu double
 
-    public Rekening(String materiaalNaam, int materiaalAantal, int materiaalPrijs) {
+    public Rekening(String materiaalNaam, int aantal, double prijs) {
         this.materiaalNaam = materiaalNaam;
-        this.materiaalAantal = materiaalAantal;
-        this.materiaalPrijs = materiaalPrijs;
+        this.aantal = aantal;
+        this.prijs = prijs;
     }
 
     public int getPrijs() {
-        return materiaalAantal * materiaalPrijs;
+        return (int) (prijs * aantal);
     }
 
-    @Override
-    public String toString() {
-        return materiaalAantal + "x " + materiaalNaam + " (€" + materiaalPrijs + " per stuk)";
+    public String getBeschrijving() {
+        return aantal + "x " + materiaalNaam + " (€" + prijs + " per stuk)";
     }
 }
 
-class Factuur {
+//class Factuur {
+//    private int factuurId;
+//    public int hoeveelheid;
+//    public boolean isBetaald = false;
+//
+//    public Factuur(int factuurId, int hoeveelheid, boolean isBetaald){
+//        this.factuurId = factuurId;
+//        this.hoeveelheid = hoeveelheid;
+//        this.isBetaald = isBetaald;
+//    }
+//
+//    public void addBeschrijving(){
+//
+//    }
+//}
+//
+//class Huurfactuur extends Factuur{
+//    @Override
+//
+//}
+//
+//class Verkoopfactuur extends Factuur{
+//    @Override
+//
+//}
+public class Factuur {
     private int factuurId;
     public int hoeveelheid;
-    public boolean isBetaald = false;
+    public boolean isBetaald;
 
-    public Factuur(int factuurId, int hoeveelheid, boolean isBetaald){
+    public Factuur(int factuurId, int hoeveelheid, boolean isBetaald) {
         this.factuurId = factuurId;
         this.hoeveelheid = hoeveelheid;
         this.isBetaald = isBetaald;
     }
 
-    public void addBeschrijving(){
-
+    public String addBeschrijving() {
+        return "Factuur ID: " + factuurId + ", Hoeveelheid: " + hoeveelheid + ", Betaald: " + isBetaald;
     }
 }
 
-class Huurfactuur extends Factuur{
-    @Override
+public class Huurfactuur extends Factuur {
+    private List<Rekening> materiaalLijst; // referentie, geen nieuwe lijst
+    private Date huurTijd;
+    private Date tijdTerug;
 
+    public Huurfactuur(int factuurId, int hoeveelheid, boolean isBetaald, List<Rekening> materiaalLijst, Date huurTijd, Date tijdTerug) {
+        super(factuurId, hoeveelheid, isBetaald);
+        this.materiaalLijst = materiaalLijst;
+        this.huurTijd = huurTijd;
+        this.tijdTerug = tijdTerug;
+    }
+
+    public List<Rekening> getMateriaal() {
+        return materiaalLijst;
+    }
+
+    public double getPrijsMateriaal() {
+        return materiaalLijst.stream().mapToDouble(Rekening::getPrijs).sum();
+    }
+
+    public Date huurTijd() {
+        return huurTijd;
+    }
+
+    public Date tijdTerug() {
+        return tijdTerug;
+    }
+
+    @Override
+    public String addBeschrijving() {
+        return super.addBeschrijving() + ", Type: Huur, Prijs: €" + getPrijsMateriaal();
+    }
 }
 
-class Verkoopfactuur extends Factuur{
-    @Override
+public class Verkoopfactuur extends Factuur {
+    private List<Rekening> materiaalLijst; // referentie
 
+    public Verkoopfactuur(int factuurId, int hoeveelheid, boolean isBetaald, List<Rekening> materiaalLijst) {
+        super(factuurId, hoeveelheid, isBetaald);
+        this.materiaalLijst = materiaalLijst;
+    }
+
+    public List<Rekening> getMateriaal() {
+        return materiaalLijst;
+    }
+
+    public double getPrijsMateriaal() {
+        return materiaalLijst.stream().mapToDouble(Rekening::getPrijs).sum();
+    }
+
+    public void removeMatUitOpslag() {
+        // Simulatie van verwijderen, bijv. print
+        System.out.println("Materiaal verwijderd uit opslag.");
+    }
+
+    @Override
+    public String addBeschrijving() {
+        return super.addBeschrijving() + ", Type: Verkoop, Prijs: €" + getPrijsMateriaal();
+    }
 }
 
-class Email {
+//class Email {
+//    public String emailId;
+//
+//    public Email(String emailId){
+//        this.emailId = emailId;
+//    }
+//
+//    public String getEmail(){
+//
+//    }
+//
+//    public createEmail(){
+//
+//    }
+//
+//}
+public class Email {
     public String emailId;
+    private Factuur factuur;
 
-    public Email(String emailId){
+    public Email(String emailId, Factuur factuur) {
         this.emailId = emailId;
+        this.factuur = factuur;
     }
 
-    public String getEmail(){
-
+    public String getEmail() {
+        return createEmail();
     }
 
-    public createEmail(){
-
+    public String createEmail() {
+        String header = "Geachte klant,\n\nHierbij ontvangt u de factuurgegevens:\n";
+        String body = factuur.addBeschrijving();
+        String footer = "\n\nMet vriendelijke groet,\nAV Bedrijf Licht & Geluid\n";
+        return header + body + footer;
     }
-
 }
-
 
 
 
 public class Main {
     public static void main(String[] args) {
+        // Voorbeeldmateriaal
+        Rekening r1 = new Rekening("Speaker", 2, 150.0);
+        Rekening r2 = new Rekening("Versterker", 1, 300.0);
+        List<Rekening> materiaalLijst = Arrays.asList(r1, r2);
 
+        // Maak een factuur aan (bijv. verkoop)
+        Verkoopfactuur factuur = new Verkoopfactuur(101, 3, true, materiaalLijst);
 
+        // Zet de factuur in een e-mail
+        Email email = new Email("klant123@voorbeeld.nl", factuur);
+
+        // Print de e-mail
+        System.out.println(email.getEmail());
     }
 }
