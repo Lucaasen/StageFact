@@ -1,33 +1,5 @@
 import java.util.*;
 
-//class User {
-//    private String username;
-//    private String password;
-//    private int userId;
-//    Scanner scanner = new Scanner(System.in);
-//
-//    public User(String username, String password, int userId) {
-//        this.username = username;
-//        this.password = password;
-//        this.userId = userId;
-//    }
-//
-//    public void setUsername(String username){
-//        this.username = scanner.nextLine();
-//    }
-//
-//    public int getUserId(){
-//        return userId;
-//    }
-//
-//    private void setPassword(String password){
-//        this.password = scanner.nextLine();
-//    }
-//
-//    public void login(){
-//        if((username.contentEquals(SLQ.username)&&(password.contentEquals(SQL.password))));
-//    }
-//}
 public class User {
     public String username; // Volgens UML: public
     private String password;
@@ -73,20 +45,6 @@ public class User {
     }
 }
 
-//class Klant {
-//    public String klantNaam;
-//    public ArrayList<Klantb> klantBestelling;
-//    public ArrayList<eventH> evenementHuur;
-//
-//    public Klant(String klantNaam){
-//        this.klantNaam = klantNaam;
-//    }
-//
-//    private void createKlantData(){
-//
-//    }
-//
-//}
 public class Klant {
     public String klantNaam;
     public ArrayList<Klantb> klantBestelling;
@@ -98,14 +56,6 @@ public class Klant {
         this.evenementHuur = new ArrayList<>();
     }
 
-//    private void createKlantData(){
-//        // Voorbeelddata – zou normaal via invoer of database komen
-//        klantBestelling.add(new Klantb("Pizza", 2));
-//        klantBestelling.add(new Klantb("Pasta", 1));
-//
-//        evenementHuur.add(new eventH("Verjaardagsfeest", "2025-05-20"));
-//        evenementHuur.add(new eventH("Bedrijfsevent", "2025-06-15"));
-//    }
     private void createKlantData(){
         // Simulatie van klantbestelling (verkoop)
         klantBestelling.add(new Klantb("Lichtset Pro", 2, 149.99));
@@ -157,25 +107,6 @@ public class eventH {
     }
 }
 
-//class Berekenen {
-//    public int materiaalId;
-//    public List<rekening>rekening;
-//
-//    public Berekenen(int materiaalId){
-//        this.materiaalId = materiaalId;
-//    }
-//
-//    public String removeMateriaal(){
-//        return (rekening.removeMateriaal);
-//    }
-//
-//    public int getMateriaalPrijs(){
-//        return materiaalPrijs;
-//    }
-//    public void showRekening(){
-//
-//    }
-//}
 public class Berekenen {
     public int materiaalId;
     public List<Rekening> rekening;
@@ -234,31 +165,6 @@ public class Rekening {
     }
 }
 
-//class Factuur {
-//    private int factuurId;
-//    public int hoeveelheid;
-//    public boolean isBetaald = false;
-//
-//    public Factuur(int factuurId, int hoeveelheid, boolean isBetaald){
-//        this.factuurId = factuurId;
-//        this.hoeveelheid = hoeveelheid;
-//        this.isBetaald = isBetaald;
-//    }
-//
-//    public void addBeschrijving(){
-//
-//    }
-//}
-//
-//class Huurfactuur extends Factuur{
-//    @Override
-//
-//}
-//
-//class Verkoopfactuur extends Factuur{
-//    @Override
-//
-//}
 public class Factuur {
     private int factuurId;
     public int hoeveelheid;
@@ -336,22 +242,6 @@ public class Verkoopfactuur extends Factuur {
     }
 }
 
-//class Email {
-//    public String emailId;
-//
-//    public Email(String emailId){
-//        this.emailId = emailId;
-//    }
-//
-//    public String getEmail(){
-//
-//    }
-//
-//    public createEmail(){
-//
-//    }
-//
-//}
 public class Email {
     public String emailId;
     private Factuur factuur;
@@ -372,8 +262,6 @@ public class Email {
         return header + body + footer;
     }
 }
-
-
 
 public class Main {
     public static void main(String[] args) {
