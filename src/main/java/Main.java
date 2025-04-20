@@ -1,7 +1,7 @@
 import java.util.*;
 
-public class User {
-    public String username; // Volgens UML: public
+class User {
+    public String username;
     private String password;
     private int userId;
     public ArrayList<Klant> klanten;
@@ -22,7 +22,7 @@ public class User {
         this.username = scanner.nextLine();
     }
 
-    void setPassword() { // geen access modifier opgegeven in UML, dus default
+    void setPassword() {
         System.out.print("Enter new password: ");
         this.password = scanner.nextLine();
     }
@@ -45,7 +45,7 @@ public class User {
     }
 }
 
-public class Klant {
+class Klant {
     public String klantNaam;
     public ArrayList<Klantb> klantBestelling;
     public ArrayList<eventH> evenementHuur;
@@ -75,7 +75,7 @@ public class Klant {
     }
 }
 
-public class Klantb {
+class Klantb {
     public String productNaam;
     public int aantal;
     public double prijsPerStuk;
@@ -91,7 +91,7 @@ public class Klantb {
     }
 }
 
-public class eventH {
+class eventH {
     public String eventNaam;
     public String datum;
     public ArrayList<String> gehuurdeItems;
@@ -107,7 +107,7 @@ public class eventH {
     }
 }
 
-public class Berekenen {
+class Berekenen {
     public int materiaalId;
     public List<Rekening> rekening;
 
@@ -145,10 +145,10 @@ public class Berekenen {
     }
 }
 
-public class Rekening {
+class Rekening {
     private String materiaalNaam;
     private int aantal;
-    private double prijs; // <-- was int, nu double
+    private double prijs;
 
     public Rekening(String materiaalNaam, int aantal, double prijs) {
         this.materiaalNaam = materiaalNaam;
@@ -165,7 +165,7 @@ public class Rekening {
     }
 }
 
-public class Factuur {
+class Factuur {
     private int factuurId;
     public int hoeveelheid;
     public boolean isBetaald;
@@ -181,8 +181,8 @@ public class Factuur {
     }
 }
 
-public class Huurfactuur extends Factuur {
-    private List<Rekening> materiaalLijst; // referentie, geen nieuwe lijst
+class Huurfactuur extends Factuur {
+    private List<Rekening> materiaalLijst;
     private Date huurTijd;
     private Date tijdTerug;
 
@@ -215,8 +215,8 @@ public class Huurfactuur extends Factuur {
     }
 }
 
-public class Verkoopfactuur extends Factuur {
-    private List<Rekening> materiaalLijst; // referentie
+class Verkoopfactuur extends Factuur {
+    private List<Rekening> materiaalLijst;
 
     public Verkoopfactuur(int factuurId, int hoeveelheid, boolean isBetaald, List<Rekening> materiaalLijst) {
         super(factuurId, hoeveelheid, isBetaald);
@@ -232,7 +232,6 @@ public class Verkoopfactuur extends Factuur {
     }
 
     public void removeMatUitOpslag() {
-        // Simulatie van verwijderen, bijv. print
         System.out.println("Materiaal verwijderd uit opslag.");
     }
 
@@ -242,7 +241,7 @@ public class Verkoopfactuur extends Factuur {
     }
 }
 
-public class Email {
+class Email {
     public String emailId;
     private Factuur factuur;
 
@@ -258,25 +257,40 @@ public class Email {
     public String createEmail() {
         String header = "Geachte klant,\n\nHierbij ontvangt u de factuurgegevens:\n";
         String body = factuur.addBeschrijving();
-        String footer = "\n\nMet vriendelijke groet,\nAV Bedrijf Licht & Geluid\n";
+        String footer = "\n\nMet vriendelijke groet,\nStageLink\n";
         return header + body + footer;
     }
 }
 
+//import java.sql.Connection;
+//import java.sql.DriverManager;
+//import java.sql.SQLException;
+//
+//public class Database {
+//    private static final String URL = "jdbc:mysql://localhost:3306/stagefact";
+//    private static final String USER = "root";
+//    private static final String PASSWORD = "";
+//
+//    public static Connection getConnection() throws SQLException {
+//        return DriverManager.getConnection(URL, USER, PASSWORD);
+//    }
+//}
+
 public class Main {
     public static void main(String[] args) {
-        // Voorbeeldmateriaal
+
         Rekening r1 = new Rekening("Speaker", 2, 150.0);
         Rekening r2 = new Rekening("Versterker", 1, 300.0);
         List<Rekening> materiaalLijst = Arrays.asList(r1, r2);
 
-        // Maak een factuur aan (bijv. verkoop)
-        Verkoopfactuur factuur = new Verkoopfactuur(101, 3, true, materiaalLijst);
+        Factuur factuur1 = new Huurfactuur(102, 5, false, materiaalLijst, new Date(), new Date());
+        Factuur factuur2 = new Verkoopfactuur(101, 2, true, materiaalLijst);
 
-        // Zet de factuur in een e-mail
-        Email email = new Email("klant123@voorbeeld.nl", factuur);
+        System.out.println(factuur1.addBeschrijving());
+        System.out.println(factuur2.addBeschrijving());
 
-        // Print de e-mail
+        Email email = new Email("klant123@voorbeeld.nl", factuur2);
+
         System.out.println(email.getEmail());
     }
 }
